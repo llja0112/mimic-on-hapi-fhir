@@ -8,6 +8,9 @@ spring:
       # Small Neon computes have low connection limits
       maximum-pool-size: 10
       minimum-idle: 2
+      # Neon drops some long-lived connections; ping idle ones and recycle often
+      keepalive-time: 60000
+      max-lifetime: 300000
   jpa:
     properties:
       hibernate:
