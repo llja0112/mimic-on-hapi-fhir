@@ -49,6 +49,13 @@ docker compose -f docker-compose.neon.yml down
 The first startup creates HAPI's schema in Neon and can take a few minutes.
 Stop the local stack after loading so only the deployed server uses the database.
 
+Neon occasionally drops connections mid-import, which leaves a few chunks of
+800 resources unloaded. Check every resource ID and upload any gaps (works
+against the local or the deployed server):
+```bash
+python verify_import.py --fhir-url http://localhost:8080/fhir --repair
+```
+
 Check how much storage the load used (to pick a Neon plan):
 ```sql
 SELECT pg_size_pretty(pg_database_size('neondb'));
