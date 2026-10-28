@@ -97,6 +97,12 @@ curl "http://localhost:8080/fhir/Observation?subject=Patient/12345&_count=5"
 
 ---
 
+## ☁️ Cloud Deployment
+
+To host the server on Render or Railway with a Neon Postgres database, see [DEPLOY.md](DEPLOY.md).
+
+---
+
 ## 🔍 Patient Subset Filtering (Performance Optimization)
 
 For large-scale analysis or resource-constrained environments, you can filter data to include only specific patient cohorts:

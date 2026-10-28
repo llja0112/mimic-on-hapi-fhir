@@ -1,0 +1,33 @@
+# Local HAPI FHIR + file server writing to Neon Postgres (no local database).
+# Use this to load ./input_data/fhir into Neon with bulk_import.py; the
+# deployed HAPI on Render/Railway then serves the same database.
+#
+#   cp .env.example .env   # fill in the SPRING_DATASOURCE_* values
+#   docker compose -f docker-compose.neon.yml up -d --build
+services:
+  fhir:
+    build: ./hapi
+    ports:
+      - 8080:8080
+    restart: "unless-stopped"
+    depends_on:
+      - fhir-files
+    env_file: .env
+    environment:
+      # Enable $import for loading only; deployed instances keep it off
+      - 'SPRING_APPLICATION_JSON={"hapi":{"fhir":{"bulk_import_enabled":true}}}'
+
+  fhir-files:
+    build:
+      context: .
+      dockerfile: Dockerfile.fhir-files
+    ports:
+      - 8000:8000
+    restart: "unless-stopped"
+    volumes:
+      - ./input_data/fhir:/app/fhir:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

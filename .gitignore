@@ -197,12 +197,11 @@ tmp/
 *.backup
 *~
 
-# FHIR specific ignores
-# Uncomment the following lines if you don't want to track large FHIR data files
-# *.ndjson
-# *.ndjson.gz
-# fhir/*.ndjson
-# fhir/*.ndjson.gz
+# MIMIC / FHIR data - never commit (PhysioNet downloads, NDJSON, DB dumps)
+physionet.org/
+*.ndjson
+*.ndjson.gz
+*.dump
 
 # Configuration files that might contain sensitive information
 config.json
