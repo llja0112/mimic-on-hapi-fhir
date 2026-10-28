@@ -1,0 +1,9 @@
+name: mimic-fhir
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.11
+  - requests
+  - pandas
+  - notebook

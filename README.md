@@ -83,7 +83,16 @@ python bulk_import.py \
     --files MimicPatient.ndjson.gz MimicCondition.ndjson.gz
 ```
 
-### 5. Query Your Data
+### 5. Verify the Import
+```bash
+# Report resources from the NDJSON files that are missing on the server
+python verify_import.py --fhir-url http://localhost:8080/fhir
+
+# Upload any missing resources (PUT by ID, safe to re-run)
+python verify_import.py --fhir-url http://localhost:8080/fhir --repair
+```
+
+### 6. Query Your Data
 ```bash
 # Get patient count
 curl "http://localhost:8080/fhir/Patient?_summary=count"
@@ -94,6 +103,12 @@ curl "http://localhost:8080/fhir/Condition?code=I50.9&_count=10"
 # Get observations for a patient
 curl "http://localhost:8080/fhir/Observation?subject=Patient/12345&_count=5"
 ```
+
+---
+
+## ☁️ Cloud Deployment
+
+To host the server on Render or Railway with a Neon Postgres database, see [DEPLOY.md](DEPLOY.md).
 
 ---
 

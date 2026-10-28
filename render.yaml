@@ -1,0 +1,23 @@
+# Render Blueprint: HAPI FHIR web service backed by Neon Postgres.
+# The database lives in Neon, so there is no `databases:` block here.
+services:
+  - type: web
+    name: mimic-hapi-fhir
+    runtime: docker
+    dockerContext: ./hapi
+    dockerfilePath: ./hapi/Dockerfile
+    # Keep this in the same region as the Neon project (singapore = AWS ap-southeast-1)
+    region: singapore
+    # HAPI needs ~2 GB RAM; smaller plans run out of memory
+    plan: standard
+    healthCheckPath: /fhir/metadata
+    envVars:
+      - key: PORT
+        value: "8080"
+      # Neon direct endpoint, e.g. jdbc:postgresql://ep-xxxx.us-east-1.aws.neon.tech/neondb?sslmode=require
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
